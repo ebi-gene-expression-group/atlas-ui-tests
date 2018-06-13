@@ -4,14 +4,14 @@ language: node_js
 node_js:
 - '8'
 addons:
-  apt:
-    packages:
-    - chromium-chromedriver
-  chrome: stable
+#  apt:
+#    packages:
+#    - chromium-chromedriver
+#  chrome: stable
   browserstack:
     username: monicajianu1
     access_key:
       secure: '08GngiZtLPpTMqTHis+tCE3flQKI1pb+UKEBe66zh1d5CPyHTtS/TxK2IRlhP96przezrnvzIpNc7ECqWIaUnFRLQEOsdAPUgLAJWDJubZErAEfWz0eeoSDLTAzTZIaqAir2zw2/xSt5burmqziseDcu5eFU4RV/gU6tAhGHA1YupVGPnK+zOIgEPBL4R9l5qrUC43g2NO9RUUZ0URdmip82+ty5BzsX9cj58g9LV845DYA7MJ88XE3Qp/ooe9CAu3p0iopQFozlMr2YE/oe4lc8Cy9C6QBQuB2jf9qpJeEc0XCG5pRAbHThz1mzoq5C4Iy4a2aGdScBZ0OdErCt5ZO4A1f6DyQNljBvM8QKuYAAGBrA+v8T2nJ8/gBEkjQdHDRC5ijNXY0HvqblVLQA+AnfmGbssdFYTwNW2drETHy8vr4krK7l7K7K7H2dwWK53wbe6G0wBNSur8KPmIiYz415dK8Nnl4uFxNIcJAD8UFRmr9oK4nYSpnuPcjzN7Nr0W+XWm6liTu9WmTOZa3SWzy6idtwKxLpOMW41gqXNOfgl9JGWHrQULMDQYbE9yh7GE36ql1B3WaEY1WK+A+/PXorRYSqmKI1ZKPPF4L3T/xy58z+otyXheYXitjgospB92jOxSyvli++VIaXw+n18bkzTtqxdEQDjEq8lRpNCjg='
 
-before_script:
-- ln -s /usr/lib/chromium-browser/chromedriver ~/bin/chromedriver
+#before_script:
+#- ln -s /usr/lib/chromium-browser/chromedriver ~/bin/chromedriver
