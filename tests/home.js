@@ -1,4 +1,5 @@
 const selenium = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
 
 beforeAll(done => {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
@@ -9,14 +10,24 @@ beforeAll(done => {
 describe('Landing page', () => {
   // Open Expression Atlas in the browser before each test is run
   beforeEach(done => {
-    const chromeCapabilities = selenium.Capabilities.chrome()
-    chromeCapabilities.set('chromeOptions', {
-      args: ['--headless', '--no-sandbox', '--disable-dev-shm-usage']
-    });
+    // const chromeCapabilities = selenium.Capabilities.chrome()
+    // chromeCapabilities.set('chromeOptions', {
+    //   args: ['--headless', '--no-sandbox', '--disable-dev-shm-usage']
+    // });
+    //
+    // driver = new selenium.Builder()
+    //   .withCapabilities(chromeCapabilities)
+    //   .build();
 
     driver = new selenium.Builder()
-      .withCapabilities(chromeCapabilities)
-      .build();
+      .forBrowser("chrome")
+      .setChromeOptions(
+        new chrome.Options()
+          .headless()
+          .windowSize({width: 640, height: 480})
+        )
+          // .addArguments("--no-sandbox"))
+      .build()
 
     driver.get('https://www-test.ebi.ac.uk/gxa/').then(done)
   });
