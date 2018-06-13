@@ -11,7 +11,7 @@ describe('Landing page', () => {
   beforeEach(done => {
     const chromeCapabilities = selenium.Capabilities.chrome()
     chromeCapabilities.set('chromeOptions', {
-      args: ['--headless', '--disable-gpu', '--no-sandbox']
+      args: ['--headless', '--no-sandbox', '--disable-dev-shm-usage']
     });
 
     driver = new selenium.Builder()
