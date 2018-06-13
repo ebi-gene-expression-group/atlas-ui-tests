@@ -9,7 +9,14 @@ beforeAll(done => {
 describe('Landing page', () => {
   // Open Expression Atlas in the browser before each test is run
   beforeEach(done => {
-    driver = new selenium.Builder().withCapabilities(selenium.Capabilities.chrome()).build();
+    const chromeCapabilities = selenium.Capabilities.chrome()
+    chromeCapabilities.set('chromeOptions', {
+      args: ['--headless', '--disable-gpu', '--no-sandbox']
+    });
+
+    driver = new selenium.Builder()
+      .withCapabilities(chromeCapabilities)
+      .build();
 
     driver.get('https://www-test.ebi.ac.uk/gxa/').then(done)
   });
