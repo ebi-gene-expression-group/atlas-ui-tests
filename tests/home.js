@@ -1,5 +1,6 @@
 const selenium = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
+const process = require('process')
 
 beforeAll(done => {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
@@ -19,7 +20,15 @@ describe('Landing page', () => {
     //   .withCapabilities(chromeCapabilities)
     //   .build();
 
+    const capabilities = {
+      'browserName' : 'Chrome',
+      'browserstack.debug' : 'true',
+      'browserstack.localIdentifier' : process.env.BROWSERSTACK_LOCAL_IDENTIFIER
+    }
+
     driver = new selenium.Builder()
+      .usingServer('http://hub-cloud.browserstack.com/wd/hub')
+      .withCapabilities(capabilities)
       .forBrowser("chrome")
       .setChromeOptions(
         new chrome.Options()
