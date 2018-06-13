@@ -23,7 +23,9 @@ describe('Landing page', () => {
     const capabilities = {
       'browserName' : 'Chrome',
       'browserstack.debug' : 'true',
-      'browserstack.localIdentifier' : process.env.BROWSERSTACK_LOCAL_IDENTIFIER
+      'browserstack.localIdentifier' : process.env.BROWSERSTACK_LOCAL_IDENTIFIER,
+      'browserstack.user' : 'monicajianu1',
+      'browserstack.key' : process.env.BROWSERSTACK_KEY
     }
 
     driver = new selenium.Builder()
