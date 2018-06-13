@@ -57,10 +57,6 @@ describe('Expression Atlas navigation bar', () => {
     driver.quit().then(done)
   });
 
-  it('Loads About page', done => {
-    testNavItems('About', '/about').then(done)
-  })
-
   it('Loads Browse experiment page', done => {
     testNavItems('Browse experiments', '/experiments').then(done)
   })
@@ -77,12 +73,16 @@ describe('Expression Atlas navigation bar', () => {
     testNavItems('FAQ', '/FAQ').then(done)
   })
 
-  it('Loads Help page', done => {
+  xit('Loads Help page', done => {
     testNavItems('Help', '/help/index').then(done)
   })
 
-  it('Loads Licence page', done => {
+  xit('Loads Licence page', done => {
     testNavItems('Licence', '/licence').then(done)
+  })
+
+  xit('Loads About page', done => {
+    testNavItems('About', '/about').then(done)
   })
 
   const testNavItems = (text, expectedUrl) => {
