@@ -1,6 +1,20 @@
-const selenium = require('selenium-webdriver');
-const chrome = require('selenium-webdriver/chrome');
-const process = require('process')
+const webdriver = require('browserstack-webdriver');
+
+const getWebdriver = () => {
+  const capabilities = {
+    'browserName' : 'Chrome',
+    'resolution' : '1920x1080',
+    'browserstack.debug' : 'true',
+    'browserstack.localIdentifier' : process.env.BROWSERSTACK_LOCAL_IDENTIFIER,
+    'browserstack.user' : 'monicajianu1',
+    'browserstack.key' : process.env.BROWSERSTACK_KEY
+  }
+
+  return new webdriver.Builder()
+    .usingServer('http://hub-cloud.browserstack.com/wd/hub')
+    .withCapabilities(capabilities)
+    .build()
+}
 
 beforeAll(done => {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
@@ -11,34 +25,7 @@ beforeAll(done => {
 describe('Landing page', () => {
   // Open Expression Atlas in the browser before each test is run
   beforeEach(done => {
-    // const chromeCapabilities = selenium.Capabilities.chrome()
-    // chromeCapabilities.set('chromeOptions', {
-    //   args: ['--headless', '--no-sandbox', '--disable-dev-shm-usage']
-    // });
-    //
-    // driver = new selenium.Builder()
-    //   .withCapabilities(chromeCapabilities)
-    //   .build();
-
-    const capabilities = {
-      'browserName' : 'Chrome',
-      'browserstack.debug' : 'true',
-      'browserstack.localIdentifier' : process.env.BROWSERSTACK_LOCAL_IDENTIFIER,
-      'browserstack.user' : 'monicajianu1',
-      'browserstack.key' : process.env.BROWSERSTACK_KEY
-    }
-
-    driver = new selenium.Builder()
-      .usingServer('http://hub-cloud.browserstack.com/wd/hub')
-      .withCapabilities(capabilities)
-      .forBrowser("chrome")
-      .setChromeOptions(
-        new chrome.Options()
-          .headless()
-          .windowSize({width: 640, height: 480})
-          .addArguments("--no-sandbox", "--disable-dev-shm-usage")
-        )
-      .build()
+    driver = getWebdriver()
 
     driver.get('https://www-test.ebi.ac.uk/gxa/').then(done)
   });
@@ -60,7 +47,7 @@ describe('Landing page', () => {
 describe('Expression Atlas navigation bar', () => {
   // Open Expression Atlas in the browser before each test is run
   beforeEach(done => {
-    driver = new selenium.Builder().withCapabilities(selenium.Capabilities.chrome()).build();
+    driver = getWebdriver()
 
     driver.get('https://www-test.ebi.ac.uk/gxa/').then(done)
   });
@@ -99,7 +86,7 @@ describe('Expression Atlas navigation bar', () => {
   })
 
   const testNavItems = (text, expectedUrl) => {
-    return driver.findElement(selenium.By.linkText(text)).click().then(() => {
+    return driver.findElement(webdriver.By.linkText(text)).click().then(() => {
       driver.getCurrentUrl().then(value => {
         expect(value).toContain(expectedUrl);
       })

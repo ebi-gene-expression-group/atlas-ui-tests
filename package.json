@@ -8,6 +8,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "browserstack-webdriver": "^2.41.1",
     "jasmine": "^3.1.0",
     "selenium-webdriver": "^4.0.0-alpha.1"
   },
