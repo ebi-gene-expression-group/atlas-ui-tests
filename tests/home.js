@@ -25,7 +25,7 @@ describe('Landing page', () => {
         new chrome.Options()
           .headless()
           .windowSize({width: 640, height: 480})
-          .addArguments("--no-sandbox")
+          .addArguments("--no-sandbox", "--disable-dev-shm-usage")
         )
       .build()
 
