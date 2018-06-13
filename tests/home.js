@@ -25,8 +25,8 @@ describe('Landing page', () => {
         new chrome.Options()
           .headless()
           .windowSize({width: 640, height: 480})
+          .addArguments("--no-sandbox")
         )
-          // .addArguments("--no-sandbox"))
       .build()
 
     driver.get('https://www-test.ebi.ac.uk/gxa/').then(done)
@@ -90,7 +90,6 @@ describe('Expression Atlas navigation bar', () => {
   const testNavItems = (text, expectedUrl) => {
     return driver.findElement(selenium.By.linkText(text)).click().then(() => {
       driver.getCurrentUrl().then(value => {
-
         expect(value).toContain(expectedUrl);
       })
     })
