@@ -37,19 +37,7 @@ npm test
 If you want to run a specific test file, you can use the following command:
 
 ```
-jasmine <path_to_test_file>
-```
-
-Note: This command assumes you have installed [Jasmine](https://jasmine.github.io/) globally. In order to do this, you can run the command:
-
-```
-npm install -g jasmine
-```
-
-Alternatively, you can use the local project Jasmine, installed in the `node_modules` directory:
-
-```
-node_modules/jasmine/bin/jasmine.js <path_to_test_file>
+npx jasmine <path_to_test_file>
 ```
 
 #### Running tests in IntelliJ IDEA
