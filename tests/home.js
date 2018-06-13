@@ -8,7 +8,7 @@ const getWebdriver = () => {
       new chrome.Options()
         .headless()
         .windowSize({width: 1280, height: 1024})
-        .addArguments("--no-sandbox", "--disable-dev-shm-usage")
+        .addArguments("--no-sandbox")
     )
     .build()
 }
