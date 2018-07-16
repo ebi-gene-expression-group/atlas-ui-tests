@@ -6,13 +6,15 @@
   "directories": {
     "test": "tests"
   },
-  "dependencies": {},
+  "dependencies": {
+  },
   "devDependencies": {
     "jasmine": "^3.1.0",
+    "jest": "^23.4.0",
     "selenium-webdriver": "^4.0.0-alpha.1"
   },
   "scripts": {
-    "test": "jasmine"
+    "test": "jest --detectOpenHandles"
   },
   "repository": {
     "type": "git",
