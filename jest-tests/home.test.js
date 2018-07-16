@@ -13,23 +13,20 @@ const getWebdriver = () => {
     .build()
 }
 
+let driver
 beforeAll(() => {
   jest.setTimeout(30000); // 30 seconds
+  driver = getWebdriver()
+})
+
+afterAll(() => {
+  driver.quit()
 })
 
 describe('Landing page', () => {
-  let driver
-
   // Open Expression Atlas in the browser before each test is run
   beforeEach(done => {
-    driver = getWebdriver()
-
     driver.get('https://www-test.ebi.ac.uk/gxa/').then(done)
-  });
-
-  // Close the website after each test is run (so that it is opened fresh each time)
-  afterEach(done => {
-    driver.quit().then(done)
   });
 
   it('Should be on the home page', done => {
@@ -42,60 +39,38 @@ describe('Landing page', () => {
 })
 
 describe('Expression Atlas navigation bar', () => {
-  let driver
-
   // Open Expression Atlas in the browser before each test is run
   beforeEach(done => {
-    driver = getWebdriver()
-
     driver.get('https://www-test.ebi.ac.uk/gxa/').then(done)
   })
 
-  // Close the website after each test is run (so that it is opened fresh each time)
-  afterEach(done => {
-    driver.quit().then(done)
+  it('Loads About page', () => {
+    return testNavItems('About', '/about')
+
   })
 
-  it('Loads About page', done => {
-    testNavItems('About', '/about').then(done).catch((error) => {
-      console.error(error)
-    })
+  it('Loads Browse experiment page', () => {
+    return testNavItems('Browse experiments', '/experiments')
   })
 
-  it('Loads Browse experiment page', done => {
-    testNavItems('Browse experiments', '/experiments').then(done).catch((error) => {
-      console.error(error)
-    })
+  it('Loads Download page', () => {
+    return testNavItems('Download', '/download')
   })
 
-  it('Loads Download page', done => {
-    testNavItems('Download', '/download').then(done).catch((error) => {
-      console.error(error)
-    })
+  it('Loads Release notes page', () => {
+    return testNavItems('Release notes', '/release-notes')
   })
 
-  it('Loads Release notes page', done => {
-    testNavItems('Release notes', '/release-notes').then(done).catch((error) => {
-      console.error(error)
-    })
+  it('Loads FAQ page', () => {
+    return testNavItems('FAQ', '/FAQ')
   })
 
-  it('Loads FAQ page', done => {
-    testNavItems('FAQ', '/FAQ').then(done).catch((error) => {
-      console.error(error)
-    })
+  it('Loads Help page', () => {
+    return testNavItems('Help', '/help/index')
   })
 
-  it('Loads Help page', done => {
-    testNavItems('Help', '/help/index').then(done).catch((error) => {
-      console.error(error)
-    })
-  })
-
-  it('Loads Licence page', done => {
-    testNavItems('Licence', '/licence').then(done).catch((error) => {
-      console.error(error)
-    })
+  it('Loads Licence page', () => {
+    return testNavItems('Licence', '/licence')
   })
 
   const testNavItems = (text, expectedUrl) => {
