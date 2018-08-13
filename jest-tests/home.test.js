@@ -1,5 +1,5 @@
-const selenium = require('selenium-webdriver');
-const chrome = require('selenium-webdriver/chrome');
+import selenium from 'selenium-webdriver'
+import chrome  from 'selenium-webdriver/chrome'
 
 const getWebdriver = () => {
   return new selenium.Builder()
