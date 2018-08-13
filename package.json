@@ -1,7 +1,7 @@
 {
   "name": "atlas-ui-tests",
   "version": "0.0.1",
-  "description": "",
+  "description": "A suite of automated UI tests for Expression Atlas.",
   "main": "index.js",
   "directories": {
     "test": "tests"
@@ -9,7 +9,6 @@
   "dependencies": {
   },
   "devDependencies": {
-    "jasmine": "^3.1.0",
     "jest": "^23.4.0",
     "selenium-webdriver": "^4.0.0-alpha.1"
   },

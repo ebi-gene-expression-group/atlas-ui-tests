@@ -25,28 +25,25 @@ afterAll(() => {
 
 describe('Landing page', () => {
   // Open Expression Atlas in the browser before each test is run
-  beforeEach(done => {
-    driver.get('https://www-test.ebi.ac.uk/gxa/').then(done)
+  beforeEach( async () => {
+    await driver.get('https://www-test.ebi.ac.uk/gxa/')
   });
 
-  it('Should be on the home page', done => {
-    driver.getCurrentUrl().then(value => {
-      expect(value).toContain('/home')
+  it('Should be on the home page', async () => {
+    const currentUrl = await driver.getCurrentUrl()
 
-      done()
-    });
+    expect(currentUrl).toContain('/home')
   });
 })
 
 describe('Expression Atlas navigation bar', () => {
   // Open Expression Atlas in the browser before each test is run
-  beforeEach(done => {
-    driver.get('https://www-test.ebi.ac.uk/gxa/').then(done)
+  beforeEach( async () => {
+    await driver.get('https://www-test.ebi.ac.uk/gxa/')
   })
 
   it('Loads About page', () => {
     return testNavItems('About', '/about')
-
   })
 
   it('Loads Browse experiment page', () => {
@@ -73,12 +70,11 @@ describe('Expression Atlas navigation bar', () => {
     return testNavItems('Licence', '/licence')
   })
 
-  const testNavItems = (text, expectedUrl) => {
-    return driver.findElement(selenium.By.linkText(text)).click().then(() => {
-      driver.getCurrentUrl().then(value => {
-        expect(value).toContain(expectedUrl)
-      })
-    })
+  const testNavItems = async (text, expectedUrl) => {
+    await driver.findElement(selenium.By.linkText(text)).click()
+
+    const currentUrl = await driver.getCurrentUrl()
+    expect(currentUrl).toContain(expectedUrl)
   }
 })
 
