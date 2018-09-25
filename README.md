@@ -37,9 +37,6 @@ npm test
 If you want to run a specific test file, you can use the following command:
 
 ```
-npx jasmine <path_to_test_file>
+npx jest <path_to_test_file>
 ```
 
-#### Running tests in IntelliJ IDEA
-
-You can run the tests directly in your IDE by installing the [Jasmine plugin](https://plugins.jetbrains.com/plugin/10449-jasmine).

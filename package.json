@@ -1,18 +1,23 @@
 {
   "name": "atlas-ui-tests",
   "version": "0.0.1",
-  "description": "",
+  "description": "A suite of automated UI tests for Expression Atlas.",
   "main": "index.js",
   "directories": {
     "test": "tests"
   },
-  "dependencies": {},
+  "dependencies": {
+  },
   "devDependencies": {
-    "jasmine": "^3.1.0",
-    "selenium-webdriver": "^4.0.0-alpha.1"
+    "jest": "^23.4.0",
+    "selenium-webdriver": "^4.0.0-alpha.1",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^23.4.2",
+    "babel-preset-env": "^1.7.0",
+    "regenerator-runtime": "^0.12.1"
   },
   "scripts": {
-    "test": "jasmine"
+    "test": "jest --verbose"
   },
   "repository": {
     "type": "git",
