@@ -2,11 +2,14 @@ import {Builder, By, until} from 'selenium-webdriver'
 import chrome from 'selenium-webdriver/chrome'
 import fetch from 'node-fetch'
 
+const getUrlFromHtmlElement = async (htmlElement) => {
+  return await htmlElement.getAttribute('href')
+}
 const getUrlsFromHtmlElements = async (htmlElements) => {
   let queryURLs = []
 
   for(let element of htmlElements) {
-    let url = await element.getAttribute('href')
+    let url = await getUrlFromHtmlElement(element)
     queryURLs.push(url)
   }
 
@@ -92,14 +95,11 @@ describe('Experiment page links', () => {
     await driver.findElement(By.name('experiments-table_length')).sendKeys('All')
 
     console.log('Wait for experiments table to load')
-    await driver.sleep(5000)
+    let links = await driver.wait(until.elementsLocated(By.css("a[title='View in Expression Atlas'")));
 
-    console.log('Retrieve experiment URLs')
-    let links = await driver.findElements(By.css("a[title='View in Expression Atlas'"))
+    expect(links.length).toBeGreaterThanOrEqual(3000)
 
-    let experimentUrls = await getUrlsFromHtmlElements(links)
-
-    randomExperimentUrl = experimentUrls[Math.floor(Math.random()*experimentUrls.length)];
+    randomExperimentUrl = await getUrlFromHtmlElement(links[Math.floor(Math.random()*links.length)])
   })
 
   it('checks experiment page tabs load correctly', async () => {
