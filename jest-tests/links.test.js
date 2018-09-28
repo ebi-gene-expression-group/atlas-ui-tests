@@ -50,7 +50,6 @@ afterAll(() => {
 describe('Home page links', () => {
   beforeEach(async () => {
     await driver.get('https://www-test.ebi.ac.uk/gxa/')
-    await driver.findElement(By.id('data-protection-agree')).click()
   });
 
   it('All example queries return HTTP status 200', async () => {
@@ -65,7 +64,6 @@ describe('Home page links', () => {
 describe('Help page links', () => {
   beforeEach(async () => {
     await driver.get('https://www-test.ebi.ac.uk/gxa/help/index.html')
-    await driver.findElement(By.id('data-protection-agree')).click()
   });
 
   it('All More help internal links on the right side of the page are valid', async () => {
