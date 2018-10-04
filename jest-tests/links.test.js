@@ -31,7 +31,6 @@ const containsKnownFailure = (url) => {
 }
 
 const testUrlResponseCodeIsOk = async (urls) => {
-
   for(let url of urls) {
     if(!containsKnownFailure(url)) {
       console.log(`Fetching url ${url}`)
@@ -55,10 +54,18 @@ const getWebdriver = () => {
 }
 
 let driver
+let experimentLinks
 
 beforeAll(async () => {
   jest.setTimeout(60 * 1000); // 60 seconds
   driver = getWebdriver()
+
+  await driver.get('https://www-test.ebi.ac.uk/gxa/experiments')
+  // await driver.findElement(By.name('experiments-table_length')).sendKeys('All')
+
+  experimentLinks = await driver.wait(until.elementsLocated(By.css("a[title='View in Expression Atlas'")));
+
+  // expect(experimentLinks.length).toBeGreaterThanOrEqual(3000)
 })
 
 afterAll(() => {
@@ -103,30 +110,58 @@ xdescribe('Help page links', () => {
 })
 
 
-describe('Experiment page links', () => {
-  let randomExperimentUrl
-  let allExperimentUrls
-
-  beforeAll( async () => {
-    await driver.get('https://www-test.ebi.ac.uk/gxa/experiments')
-    await driver.findElement(By.name('experiments-table_length')).sendKeys('All')
-
-    let links = await driver.wait(until.elementsLocated(By.css("a[title='View in Expression Atlas'")));
-
-    expect(links.length).toBeGreaterThanOrEqual(3000)
-
-    randomExperimentUrl = await getUrlFromHtmlElement(links[Math.floor(Math.random()*links.length)])
-    allExperimentUrls = await getUrlsFromHtmlElements(links)
-  })
+describe('Browse experiments table', () => {
+  // beforeAll( async () => {
+  //   await driver.get('https://www-test.ebi.ac.uk/gxa/experiments')
+  //   await driver.findElement(By.name('experiments-table_length')).sendKeys('All')
+  //
+  //   experimentLinks = await driver.wait(until.elementsLocated(By.css("a[title='View in Expression Atlas'")));
+  //
+  //   expect(experimentLinks.length).toBeGreaterThanOrEqual(3000)
+  // })
 
   it('every experiment page returns 200', async () => {
-    await testUrlResponseCodeIsOk(allExperimentUrls.reverse())
-  }, 60 * 1000 * 10) // set timeout of 10 mins (!) for this test
+    let allExperimentUrls = await getUrlsFromHtmlElements(experimentLinks)
 
-  xit('checks tabs load correctly in a random experiment page', async () => {
+    await testUrlResponseCodeIsOk(allExperimentUrls)
+
+  }, 60 * 1000 * 10) // set timeout of 10 mins (!) for this test
+})
+
+describe('Experiment page', () => {
+  beforeEach(async () => {
+    let randomExperimentUrl = await getUrlFromHtmlElement(experimentLinks[Math.floor(Math.random()*experimentLinks.length)])
+
     console.log(`Navigate to experiment page ${randomExperimentUrl}`)
 
     await driver.get(randomExperimentUrl)
+  })
+
+  it('checks the page has at least 4 tabs', async () => {
+    let tabs = await driver.findElement(By.className('tabs')).findElements(By.css('a'))
+
+    expect(tabs.length).toBeGreaterThan(1)
+
+    let tabUrls = await getUrlsFromHtmlElements(tabs)
+
+    // All experiments should have these tabs
+    const expected = [
+      expect.stringMatching(/[Rr]esults/),
+      expect.stringMatching(/[Dd]esign/),
+      expect.stringMatching(/[Ss]upplementary/),
+      expect.stringMatching(/[Dd]ownloads/),
+    ]
+
+    expect(tabUrls).toEqual(
+      expect.arrayContaining(expected),
+    )
+  })
+
+  it('checks the heatmap is loaded', async () => {
+
+  })
+
+  it('checks the links in the heatmap return 200', async () => {
 
   })
 })
