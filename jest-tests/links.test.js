@@ -16,15 +16,29 @@ const getUrlsFromHtmlElements = async (htmlElements) => {
   return queryURLs
 }
 
+const containsKnownFailure = (url) => {
+  // TODO remove this filter when the cancer query is fixed (https://www.pivotaltracker.com/story/show/159763421)
+  // and the problematic experiments are fixed (https://www.pivotaltracker.com/story/show/160954439)
+  let knownFailures = ['E-GEOD-26284', 'E-GEOD-17610', 'E-MTAB-1624', 'E-TABM-713', 'cancer']
+
+  for(let failure of knownFailures) {
+    if(url.includes(failure)) {
+      console.log(`Skipping ${url} as it contains known issues: ${failure}`)
+      return true
+    }
+  }
+  return false
+}
+
 const testUrlResponseCodeIsOk = async (urls) => {
+
   for(let url of urls) {
-    // TODO remove this filter when the cancer query is fixed (https://www.pivotaltracker.com/story/show/159763421)
-    if(!url.includes('cancer')) {
+    if(!containsKnownFailure(url)) {
       console.log(`Fetching url ${url}`)
       const response = await fetch(url)
-      expect(response.ok).toBe(true)
+      // console.log(`response`, response)
+      expect(response.status).toBe(200)
     }
-
   }
 }
 
@@ -41,7 +55,8 @@ const getWebdriver = () => {
 }
 
 let driver
-beforeAll(() => {
+
+beforeAll(async () => {
   jest.setTimeout(60 * 1000); // 60 seconds
   driver = getWebdriver()
 })
@@ -50,7 +65,7 @@ afterAll(() => {
   driver.quit()
 })
 
-describe('Home page links', () => {
+xdescribe('Home page links', () => {
   beforeEach(async () => {
     await driver.get('https://www-test.ebi.ac.uk/gxa/')
   });
@@ -64,7 +79,7 @@ describe('Home page links', () => {
   })
 })
 
-describe('Help page links', () => {
+xdescribe('Help page links', () => {
   beforeEach(async () => {
     await driver.get('https://www-test.ebi.ac.uk/gxa/help/index.html')
   });
@@ -83,29 +98,36 @@ describe('Help page links', () => {
     let queryUrls = await getUrlsFromHtmlElements(links)
 
     // TODO Should we be testing external links such as GitHub repos, Reactome, Bioconductor
-    await testUrlResponseCode(queryUrls)
+    await testUrlResponseCodeIsOk(queryUrls)
   })
 })
 
+
 describe('Experiment page links', () => {
   let randomExperimentUrl
+  let allExperimentUrls
 
   beforeAll( async () => {
     await driver.get('https://www-test.ebi.ac.uk/gxa/experiments')
     await driver.findElement(By.name('experiments-table_length')).sendKeys('All')
 
-    console.log('Wait for experiments table to load')
     let links = await driver.wait(until.elementsLocated(By.css("a[title='View in Expression Atlas'")));
 
     expect(links.length).toBeGreaterThanOrEqual(3000)
 
     randomExperimentUrl = await getUrlFromHtmlElement(links[Math.floor(Math.random()*links.length)])
+    allExperimentUrls = await getUrlsFromHtmlElements(links)
   })
 
-  it('checks experiment page tabs load correctly', async () => {
+  it('every experiment page returns 200', async () => {
+    await testUrlResponseCodeIsOk(allExperimentUrls.reverse())
+  }, 60 * 1000 * 10) // set timeout of 10 mins (!) for this test
+
+  xit('checks tabs load correctly in a random experiment page', async () => {
     console.log(`Navigate to experiment page ${randomExperimentUrl}`)
 
     await driver.get(randomExperimentUrl)
 
   })
 })
+
