@@ -41,6 +41,16 @@ const testUrlResponseCodeIsOk = async (urls) => {
   }
 }
 
+const testUrlResponseCodeIsOk2 = async (url) => {
+  if(!containsKnownFailure(url)) {
+    console.log(`Fetching url ${url}`)
+    const response = await fetch(url)
+    // console.log(`response`, response)
+    expect(response.status).toBe(200)
+  }
+}
+
+
 const getWebdriver = () => {
   return new Builder()
     .forBrowser("chrome")
@@ -69,10 +79,10 @@ beforeAll(async () => {
 })
 
 afterAll(() => {
-  driver.quit()
+  // driver.quit()
 })
 
-xdescribe('Home page links', () => {
+describe('Home page links', () => {
   beforeEach(async () => {
     await driver.get('https://www-test.ebi.ac.uk/gxa/')
   });
@@ -110,20 +120,25 @@ xdescribe('Help page links', () => {
 })
 
 
-describe('Browse experiments table', () => {
-  // beforeAll( async () => {
-  //   await driver.get('https://www-test.ebi.ac.uk/gxa/experiments')
-  //   await driver.findElement(By.name('experiments-table_length')).sendKeys('All')
-  //
-  //   experimentLinks = await driver.wait(until.elementsLocated(By.css("a[title='View in Expression Atlas'")));
-  //
-  //   expect(experimentLinks.length).toBeGreaterThanOrEqual(3000)
-  // })
+xdescribe('Browse experiments table', () => {
+  beforeAll( async () => {
+    await driver.get('https://www-test.ebi.ac.uk/gxa/experiments')
+    await driver.findElement(By.name('experiments-table_length')).sendKeys('All')
+
+    experimentLinks = await driver.wait(until.elementsLocated(By.css("a[title='View in Expression Atlas'")));
+
+    expect(experimentLinks.length).toBeGreaterThanOrEqual(3000)
+  })
 
   it('every experiment page returns 200', async () => {
-    let allExperimentUrls = await getUrlsFromHtmlElements(experimentLinks)
+    for (let element of experimentLinks) {
+      let url = await getUrlFromHtmlElement(element)
+      await testUrlResponseCodeIsOk2(url)
+    }
 
-    await testUrlResponseCodeIsOk(allExperimentUrls)
+    // let allExperimentUrls = await getUrlsFromHtmlElements(experimentLinks)
+    //
+    // await testUrlResponseCodeIsOk(allExperimentUrls)
 
   }, 60 * 1000 * 10) // set timeout of 10 mins (!) for this test
 })
@@ -157,11 +172,11 @@ describe('Experiment page', () => {
     )
   })
 
-  it('checks the heatmap is loaded', async () => {
+  xit('checks the heatmap is loaded', async () => {
 
   })
 
-  it('checks the links in the heatmap return 200', async () => {
+  xit('checks the links in the heatmap return 200', async () => {
 
   })
 })
