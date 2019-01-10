@@ -18,7 +18,7 @@
     "testcafe": "^0.23.3"
   },
   "scripts": {
-    "test": "testcafe chrome testcafe-tests"
+    "test": "testcafe chrome:headless testcafe-tests"
   },
   "repository": {
     "type": "git",
