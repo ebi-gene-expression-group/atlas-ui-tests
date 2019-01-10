@@ -13,3 +13,11 @@ addons:
 
 before_script:
   - "ln -s /usr/lib/chromium-browser/chromedriver ~/bin/chromedriver"
+
+jobs:
+  include:
+  - stage: "Tests"
+    name: "Exhaustive Tests"
+    script: npm run test
+  - name: "E2E Tests"
+    script: npm run e2e-test

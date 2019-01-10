@@ -18,7 +18,8 @@
     "testcafe": "^0.23.3"
   },
   "scripts": {
-    "test": "testcafe chrome:headless testcafe-tests"
+    "test": "jest --verbose",
+    "e2e-tests": "testcafe chrome:headless testcafe-tests"
   },
   "repository": {
     "type": "git",
