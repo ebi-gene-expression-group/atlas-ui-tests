@@ -20,4 +20,4 @@ jobs:
     name: "Exhaustive Tests"
     script: npm run test
   - name: "E2E Tests"
-    script: npm run e2e-test
+    script: npm run e2e-tests
